@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        .screen {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: black;
+            margin-bottom: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #b1 {
+            color: rgb(255, 255, 255);
+            text-align: center;
+            padding: 50px;
+            font-size: 100px;
+        }
+
+        #b1:hover {
+            color: rgb(161, 86, 115);
+        }
+
+        #b1:active {
+            color: rgb(122, 29, 83);
+        }
+
+        .boton {
+            color: white;
+            padding: 20px;
+            font-size: 100px;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.dom.js"></script>
+
+</head>
+<body>
+
+    <div class="screen" id="screen">
+        <div id="boton1" class="boton">Click</div>
+    </div>
+
+    <div class="screen" id="screen2">
+        <div id="boton2" class="boton">Doble click</div>
+    </div>
+
+    <div class="screen" id="videovelocidad"></div>
+    <div class="screen"></div>
+    <div class="screen"></div>
+
+    <script>
+        document.getElementById("boton2").addEventListener("click", function(event){document.getElementById("screen2").style.backgroundColor = "#53303f";});
+
+        document.getElementById("boton2").addEventListener("dblclick", function(event){document.getElementById("screen2").style.backgroundColor = "#742647";});
+
+        const VelocidadVideoDistancia = function(p){
+
+            p.preload = () => {
+                video = p.createVideo([gato.mp4])
+            }
+
+            p.setup = () => {
+                p.createCanvas(window.innerWidth, window.innerHeight)
+                p.background(0, 255, 255)
+                p.rectMode(p.CENTER)
+
+                video.hide();
+                video.muted();
+                video.loop();
+
+            }
+            p.draw = () => {
+
+                let coordenadaA = p.createVector(p.width*0.5, p.height*0.5);
+                let coordenadaB = p.createVector(p.mouseX, p.mouseY);
+                let distancia = coordenadaA.dist(coordenadaB);
+                
+                p.clear()
+                p.noFill()
+                p.stroke(255)
+                p.strokeWeight(2)
+                p.rect(p.width*0.5, p.height*0.5, 30, 30)
+
+                p.circle(p.mouseX, p.mouseY, 30,30)
+
+                p.line(p.width*0.5, p.height*0.5, p.mouseX, p.mouseY)
+
+                p.noStroke()
+                p.fill(255)
+                p.textSize(15)
+                p.text(p.round(distancia) + " px", p.width*0.5 + 30, p.height*0.5)
+
+                let vvideo = p.map ( distancia, 0 , 1055 , 1 , 16 )
+
+                p.text(p.round(vvideo), p.width*0.5 + 30, p.height*0.5 + 20)
+
+            }
+        }
+
+        let graficonvideo1 = new p5(VelocidadVideoDistancia, document.getElementById("videovelocidad"))
+
+
+    </script>
+</body>
+</html>

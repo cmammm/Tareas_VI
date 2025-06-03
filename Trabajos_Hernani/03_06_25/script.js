@@ -1,0 +1,1 @@
+console.log("Esta es la segunda clase con Herani en la UEA 6");
