@@ -1,39 +1,27 @@
-let numHorizLines = 40;
-let numVertLines = 40;
-let baseSpacing = 10;
+let spacing = 40;
+let gridDepth = 2000; // Qué tan lejos llega la cuadrícula
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  stroke(255);
-  strokeWeight(1);
+  createCanvas(windowWidth, windowHeight, WEBGL);
   noFill();
 }
 
 function draw() {
-  background(0, 0, 255); // azul glitch
+  background(0);
+  stroke(0, 0, 255);
+  strokeWeight(1.5);
 
-  translate(width / 2, height / 2); // origen en la línea del horizonte (centro vertical)
+  // Centra la cuadrícula y la rota para simular perspectiva
+  rotateX(PI / 3);
+  translate(-width / 2, 0, 0); // Ajusta para cubrir toda la pantalla desde la mitad hacia abajo
 
-  // === LÍNEAS HORIZONTALES EN PERSPECTIVA ===
-  let yVals = []; // guardamos las posiciones Y para reutilizar
-  let y = 0;
-  for (let i = 1; i < numHorizLines; i++) {
-    y += baseSpacing * pow(1.1, i); // separación creciente
-    if (y > height / 2) break;
-    yVals.push(y);
-    line(-width / 2, y, width / 2, y); // línea horizontal de lado a lado
+  // Líneas horizontales (profundidad)
+  for (let z = 0; z < gridDepth; z += spacing) {
+    line(0, z, width, z);
   }
 
-  // === LÍNEAS VERTICALES DESDE EL HORIZONTE ===
-  for (let i = 0; i <= numVertLines; i++) {
-    let xNorm = map(i, 0, numVertLines, -1, 1); // va de -1 a 1
-    let xBottom = xNorm * (width / 2); // posición en la base
-
-    // dibuja una línea desde el horizonte (0,0) hasta el fondo en xBottom
-    line(0, 0, xBottom, height / 2);
+  // Líneas verticales (paralelas)
+  for (let x = 0; x <= width; x += spacing) {
+    line(x, 0, x, gridDepth);
   }
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
 }
