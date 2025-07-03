@@ -13,7 +13,7 @@ function draw() {
 
   zOffset += speed;
 
-  rotateX(PI / 2.3);
+  rotateX(PI / 2.1);
   translate(-width / 2, 0, 0);
 
   // Suelo gris (rectángulo)
