@@ -1,0 +1,3 @@
+Diferencias y Similitudes al usar WebCam en P5 y Touchdesigner
+
+En p5.js usar la webcam es más directo, con createCapture() ya tengo el video y desde el código controlo lo que quiero hacer. En TD (TouchDesigner), también se puede usar, pero es por nodos, y aunque da más control visual, a veces es más complejo. Ambos permiten hacer cosas interactivas en tiempo real, pero mientras p5 es más lineal y basado en texto, TD es visual y modular. Lo que tienen en común es que los dos reaccionan al video en vivo.
