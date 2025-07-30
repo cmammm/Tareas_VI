@@ -1,27 +1,51 @@
-let spacing = 40;
-let gridDepth = 2000; // Qué tan lejos llega la cuadrícula
+let angle = 0;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight, WEBGL);
-  noFill();
+  createCanvas(windowWidth, windowHeight);
+  angleMode(RADIANS);
+  background(0);
 }
 
 function draw() {
+  // Fondo con transparencia para el rastro
+  background(0, 40);
+
+  // Tiempo y ciclo
+  let t = millis() / 1000;
+  let phase = (t % 4) / 4; // ciclo de 4 segundos
+
+  // Velocidad más rápida
+  let speed = lerp(0.2, 6.0, pow(phase, 3)); 
+  angle += speed * (deltaTime / 1000);
+
+  // Brillo
+  let pulse = map(sin(t * 2), -1, 1, 0.4, 1);
+
+  // Centrar el dibujo
+  translate(width / 2, height / 2);
+  rotate(angle);
+
+  // Radio
+  let d = min(width, height) * 0.7; // más pequeño y centrado
+
+  // Dos arcos enfrentados
+  drawGlowArc(-PI / 3, PI / 3, d, pulse);
+  drawGlowArc((2 * PI) / 3, (4 * PI) / 3, d, pulse);
+}
+
+function drawGlowArc(a1, a2, diam, pulse) {
+  noFill();
+  blendMode(ADD);
+  for (let i = 30; i > 0; i--) {
+    let alpha = map(i, 30, 0, 0, 255) * pulse;
+    stroke(255, alpha);
+    strokeWeight(i * 4); // grosor del glow
+    arc(0, 0, diam, diam, a1, a2);
+  }
+  blendMode(BLEND);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
   background(0);
-  stroke(0, 0, 255);
-  strokeWeight(1.5);
-
-  // Centra la cuadrícula y la rota para simular perspectiva
-  rotateX(PI / 3);
-  translate(-width / 2, 0, 0); // Ajusta para cubrir toda la pantalla desde la mitad hacia abajo
-
-  // Líneas horizontales (profundidad)
-  for (let z = 0; z < gridDepth; z += spacing) {
-    line(0, z, width, z);
-  }
-
-  // Líneas verticales (paralelas)
-  for (let x = 0; x <= width; x += spacing) {
-    line(x, 0, x, gridDepth);
-  }
 }
